@@ -10,6 +10,16 @@ a {
 	color: #ee521f;
 }
 
+.links {
+	color: #eee;
+	display: block;
+	font-family: 'Poppins';
+	margin: 0;
+	padding: 0;
+	text-decoration: none;
+	font-size: 24px;
+}
+
 .announcement {
 	padding: 24px;
 	background: #444;

@@ -19,6 +19,15 @@ db.collection('announcements').onSnapshot(snapshot => {
 
 	for (let i = 0; i < snapshot.length; i++) {
 		let data = snapshot[i];
+
+		data.time = (new Date(data.time)).toLocaleDateString('en-US', {
+			weekday: 'long',
+			timeZone: 'America/Los_Angeles',
+			hour12: true,
+			hour: 'numeric',
+			minute: 'numeric',
+		});
+
 		html += `
 			<div class="announcement">
 				<span class="title">${data.title}</span>
