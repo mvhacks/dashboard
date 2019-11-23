@@ -2,6 +2,7 @@
   <div id="app">
     <Header/>
     <Side />
+    <Login />
     <div id="nav">
       <router-link to="/">Main</router-link>
       <router-link to="/profile">Profile</router-link>
@@ -15,12 +16,14 @@
 <script>
 import Header from '@/components/Header.vue';
 import Side from '@/components/Side.vue';
+import Login from '@/components/Login.vue';
 
 export default {
   name: 'app',
   components: {
     Header,
-    Side
+    Side,
+    Login
   }
 }
 </script>
