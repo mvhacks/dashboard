@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <Header/>
     <Side />
+    <Header/>
     <Login />
     <div id="nav">
       <router-link to="/">Main</router-link>
@@ -48,10 +48,14 @@ export default {
   color: rgb(0, 112, 187);
   text-decoration: none;
   margin-right: 10px;
+  position: relative;
+  bottom: 0px;
   transition: 0.3s all;
 }
 
 #nav a.router-link-exact-active {
   color: #2c3e50;
+  position: relative;
+  bottom: 3px;
 }
 </style>

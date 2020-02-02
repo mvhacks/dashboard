@@ -11,6 +11,16 @@
         <a href="https://mvhacks.io/request-song" class="links">mvhacks.io/request-song</a>
         <a href="https://mvhacks.io/webex" class="links">mvhacks.io/webex</a>
     </div>
+    <div style="padding: 20px; padding-top: 0;">
+      <h1 style="font-size: 40px; margin: 0px;">Current Song</h1>
+      <div id="song-container">
+        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Astro_lounge.png/220px-Astro_lounge.png">
+        <div style="position: absolute; top: 20px; right: 20px; text-align: right; padding: 0;">
+          <h2 style="margin: 0; font-size: 30px;">All Star</h2>
+          <p style="margin: 0; font-size: 20px;">Smash Mouth</p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -45,6 +55,21 @@ export default {
         color: white;
         display: inline;
         font-size: 20px;
+    }
+
+    #song-container {
+      max-width: 25vw;
+      min-width: 20vw;
+      background-color: rgb(20, 20, 20);
+      border-radius: 10px;
+      color: white;
+      padding: 20px;
+      position: relative;
+      opacity: 0.9;
+    }
+
+    #song-container > img {
+      width: 140px;
     }
 
 </style>

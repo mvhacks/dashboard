@@ -1,15 +1,85 @@
 <template>
   <div id="login">
-    <button>Login</button>
+    <transition name="fade">
+      <button id="login-btn" v-on:click="show" v-if="isHidden">Login</button>
+      <div v-if="!isHidden" id="login-panel">
+        <input placeholder="Email" v-model="email">
+        <div id="qrcontainer">
+          <p>Scan QR Code</p>
+          <qrcode-stream style="margin-left: 5px" @decode="onDecode" @init="onInit" /> 
+          <p class="decode-result"><b>{{ result }}</b></p>     
+        </div>
+        <button id="submit" v-on:click="submit">Submit</button>
+        <button id="cancel" v-on:click="cancel">Cancel</button>
+        <p class="error">{{ error }}</p>
+    </div>
+    </transition>
   </div>
 </template>
 
+<script src="./js/qr.js"></script>
 <script>
+import { QrcodeStream } from 'vue-qrcode-reader';
+import axios from 'axios';
+
 export default {
   name: 'Login',
   props: {
+  },
+  data: function() {
+    return {
+      isHidden: true,
+      result: '',
+      error: '',
+      email: '',
+      errors: []
+    }
+  },
+  components: { QrcodeStream },
+  methods: {
+    show: function () {
+      this.isHidden = false
+    },
+    cancel: function() {
+      this.isHidden = true;
+      this.email = '';
+      this.result = '';
+    },
+    submit: function() {
+      axios.get(`https://api.mvhacks.io/3.0/attendee/profile?qrcode=` + encodeURIComponent(this.result) + `&email=` + encodeURIComponent(this.email))
+      .then(response => {
+        console.log(response.data)
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
+    },
+    onDecode (result) {
+      this.result = result
+    },
+    async onInit (promise) {
+      try {
+        await promise
+      } catch (error) {
+        if (error.name === 'NotAllowedError') {
+          this.error = "ERROR: you need to grant camera access permisson"
+        } else if (error.name === 'NotFoundError') {
+          this.error = "ERROR: no camera on this device"
+        } else if (error.name === 'NotSupportedError') {
+          this.error = "ERROR: secure context required (HTTPS, localhost)"
+        } else if (error.name === 'NotReadableError') {
+          this.error = "ERROR: is the camera already in use?"
+        } else if (error.name === 'OverconstrainedError') {
+          this.error = "ERROR: installed cameras are not suitable"
+        } else if (error.name === 'StreamApiNotSupportedError') {
+          this.error = "ERROR: Stream API is not supported in this browser"
+        }
+      }
+    }
   }
 }
+
+
 </script>
 
 <style scoped>
@@ -35,6 +105,67 @@ export default {
     button:hover {
         cursor: pointer;
         background-color: rgb(55, 146, 207);
+    }
+
+    #login-panel {
+      position: absolute;
+      right: 0px;
+      top: 0px;
+      background-color: rgb(78, 78, 78);
+      width: 160px;
+      padding: 10px;
+      border-radius: 5px;
+      text-align: center;
+    }
+
+    #login-panel > input {
+      width: 150px;
+      height: 25px;
+      border-radius: 2px;
+      border: none;
+      outline: none;
+      padding-left: 2px;
+      font-family: 'Poppins';
+      font-size: 12px;
+    }
+
+    #login-panel > button {
+      transform: scale(0.8);
+    }
+
+    #submit {
+      margin-top: 5px;
+    }
+
+    #cancel {
+      background-color: rgb(220, 30, 30);
+    }
+
+    #cancel:hover {
+      background-color: rgb(240, 50, 50);
+    }
+
+    .fade-enter-active, .fade-leave-active {
+      transition: opacity 0.5s;
+    }
+
+    .fade-enter, .fade-leave-to {
+      opacity: 0;
+    }
+
+    .error {
+      font-weight: bold;
+      color: red;
+    }
+
+    #qrcontainer {
+      width: 150px;
+    }
+
+    #qrcontainer > p{
+      margin: 0px;
+      font-size: 18px;
+      color: black;
     }
 
 </style>
