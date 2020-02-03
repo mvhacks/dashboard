@@ -52,9 +52,10 @@ export default {
     }
 
     #timeLeft {
-        color: white;
+        color: rgb(20, 20, 20);
         display: inline;
         font-size: 20px;
+        opacity: 0.9;
     }
 
     #song-container {

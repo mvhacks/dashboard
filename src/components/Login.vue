@@ -111,7 +111,7 @@ export default {
       position: absolute;
       right: 0px;
       top: 0px;
-      background-color: rgb(78, 78, 78);
+      background-color: rgb(220, 220, 220);
       width: 160px;
       padding: 10px;
       border-radius: 5px;
