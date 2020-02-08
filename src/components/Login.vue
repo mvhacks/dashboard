@@ -1,8 +1,8 @@
 <template>
   <div id="login">
     <transition name="fade">
-      <button id="login-btn" v-on:click="show" v-if="isHidden">Login</button>
-      <div v-if="!isHidden" id="login-panel">
+      <button id="login-btn" v-on:click="show" v-if="isHidden && !loggedin">Login</button>
+      <div v-if="!isHidden && !loggedin" id="login-panel">
         <input placeholder="Email" v-model="email">
         <div id="qrcontainer">
           <p>Scan QR Code</p>
@@ -21,6 +21,7 @@
 <script>
 import { QrcodeStream } from 'vue-qrcode-reader';
 import axios from 'axios';
+import { bus } from '../main';
 
 export default {
   name: 'Login',
@@ -29,6 +30,7 @@ export default {
   data: function() {
     return {
       isHidden: true,
+      loggedin: false,
       result: '',
       error: '',
       email: '',
@@ -46,9 +48,17 @@ export default {
       this.result = '';
     },
     submit: function() {
-      axios.get(`https://api.mvhacks.io/3.0/attendee/profile?qrcode=` + encodeURIComponent(this.result) + `&email=` + encodeURIComponent(this.email))
+      //axios.get(`https://api.mvhacks.io/3.0/attendee/profile?qrcode=` + encodeURIComponent(this.result) + `&email=` + encodeURIComponent(this.email))
+      axios.get('https://api.mvhacks.io/3.0/attendee/profile?qrcode=loollajksnflaksjdhfl&email=attendee3@gmail.com')
       .then(response => {
         console.log(response.data)
+        if(response.data.success) {
+          this.loggedin = true;
+          bus.$emit('loggedin', response.data);
+          localStorage["data"] = JSON.stringify(response.data);
+        } else {
+          this.loggedin = false;
+        }
       })
       .catch(e => {
         this.errors.push(e)

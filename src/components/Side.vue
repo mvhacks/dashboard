@@ -14,10 +14,10 @@
     <div style="padding: 20px; padding-top: 0;">
       <h1 style="font-size: 40px; margin: 0px;">Current Song</h1>
       <div id="song-container">
-        <img src="https://upload.wikimedia.org/wikipedia/en/thumb/3/30/Astro_lounge.png/220px-Astro_lounge.png">
+        <img v-bind:src="songimg">
         <div style="position: absolute; top: 20px; right: 20px; text-align: right; padding: 0;">
-          <h2 style="margin: 0; font-size: 30px;">All Star</h2>
-          <p style="margin: 0; font-size: 20px;">Smash Mouth</p>
+          <h2 style="margin: 0; font-size: 30px; width: 320px;">{{title}}</h2>
+          <p style="margin: 0; font-size: 20px; width: 320px;">{{artist}}</p>
         </div>
       </div>
     </div>
@@ -25,9 +25,34 @@
 </template>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'Side',
   props: {
+  },
+  data : function() {
+    return {
+      songimg: "",
+      title: "",
+      artist: ""
+    }
+  },
+  created: function () {
+    this.getsong();
+  },
+  methods: {
+    getsong: function() {
+      axios.get('https://api.mvhacks.io/3.0/attendee/current-song')
+      .then(response => {
+        this.songimg = response.data.data.picture;
+        this.title = response.data.data.title;
+        this.artist = response.data.data.artist;
+      })
+      .catch(e => {
+        this.errors.push(e)
+      })
+    }
   }
 }
 </script>
