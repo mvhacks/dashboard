@@ -86,6 +86,14 @@ export default {
         }
       }
     }
+  },
+  created() {
+    if(localStorage["data"] != 'null' && localStorage["data"] != null) {
+      this.loggedin = true;
+      this.email = localStorage["data"].data.email;
+      this.result = localStorage["data"].data.qrcode_id;
+      this.submit();
+    }
   }
 }
 
