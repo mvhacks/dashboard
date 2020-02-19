@@ -19,6 +19,10 @@
           <h2 style="margin: 0; font-size: 30px; width: 320px;">{{title}}</h2>
           <p style="margin: 0; font-size: 20px; width: 320px;">{{artist}}</p>
         </div>
+        <br>
+        <div id="progress">
+          <div :style="{width: songProgress}"></div>
+        </div>
       </div>
     </div>
   </div>
@@ -35,7 +39,10 @@ export default {
     return {
       songimg: "",
       title: "",
-      artist: ""
+      artist: "",
+      start: 0,
+      end: 0,
+      songProgress: "0%"
     }
   },
   created: function () {
@@ -48,12 +55,38 @@ export default {
         this.songimg = response.data.data.picture;
         this.title = response.data.data.title;
         this.artist = response.data.data.artist;
+        this.start = response.data.data.startTime;
+        this.end = response.data.data.endTime;
+        this.playsong();
       })
       .catch(e => {
         this.errors.push(e)
       })
+    },
+    playsong: function() {
+      setTimeout(() => {
+        this.getProgress();
+        if((new Date).getTime() > this.end) {
+          this.getsong();
+        }
+        this.playsong();
+      }, 100);
+    },
+    getProgress: function() {
+      var duration = this.end - this.start;
+      var progress = (new Date).getTime() - this.start;
+      this.songProgress = ((progress/duration) * 100) + "%";
     }
-  }
+  }/*,
+  computed: {
+    songProgress: function() {
+      var duration = this.end - this.start;
+      var progress = (new Date).getTime() - this.start;
+      // alert(progress + " / " + duration)
+      // alert(((progress/duration) * 100) + "%");
+      return ((progress/duration) * 100) + "%";
+    }
+  }*/
 }
 </script>
 
@@ -96,6 +129,21 @@ export default {
 
     #song-container > img {
       width: 140px;
+    }
+
+    #progress {
+      width: 25vw;
+      height: 3px;
+      border-radius: 2px;
+      color:#000!important;
+      background-color:#f1f1f1!important;
+    }
+
+    #progress > div {
+      border-radius: 2px;
+      background-color:gray;
+      height: 3px;
+      transition: all 0.3s;
     }
 
 </style>

@@ -2,6 +2,7 @@
   <div id="login">
     <transition name="fade">
       <button id="login-btn" v-on:click="show" v-if="isHidden && !loggedin">Login</button>
+      <button id="logout-btn" v-on:click="logout" v-if="loggedin">Logout</button>
       <div v-if="!isHidden && !loggedin" id="login-panel">
         <input placeholder="Email" v-model="email">
         <div id="qrcontainer">
@@ -47,17 +48,25 @@ export default {
       this.email = '';
       this.result = '';
     },
+    logout: function() {
+      this.loggedin = false;
+      localStorage["data"] = "";
+      this.result = '';
+      this.email = '';
+      bus.$emit('loggedout');
+    },
     submit: function() {
       //axios.get(`https://api.mvhacks.io/3.0/attendee/profile?qrcode=` + encodeURIComponent(this.result) + `&email=` + encodeURIComponent(this.email))
       axios.get('https://api.mvhacks.io/3.0/attendee/profile?qrcode=loollajksnflaksjdhfl&email=attendee3@gmail.com')
       .then(response => {
-        console.log(response.data)
         if(response.data.success) {
           this.loggedin = true;
           bus.$emit('loggedin', response.data);
           localStorage["data"] = JSON.stringify(response.data);
+          this.isHidden = true;
         } else {
           this.loggedin = false;
+          this.error = "Invalid email or code"
         }
       })
       .catch(e => {
@@ -87,11 +96,14 @@ export default {
       }
     }
   },
-  created() {
-    if(localStorage["data"] != 'null' && localStorage["data"] != null) {
+  mounted() {
+    console.log(localStorage['data']);
+    if(localStorage["data"] != 'null' && localStorage["data"] != null && localStorage["data"] != "") {
+      console.log(localStorage["data"].data);
+      var stored = JSON.parse(localStorage["data"]);
       this.loggedin = true;
-      this.email = localStorage["data"].data.email;
-      this.result = localStorage["data"].data.qrcode_id;
+      this.email = stored.data.email;
+      this.result = stored.data.qrcode_id;
       this.submit();
     }
   }
@@ -174,6 +186,9 @@ export default {
     .error {
       font-weight: bold;
       color: red;
+      font-size: 15px;
+      margin: 10px 0px 0px 0px;
+      line-height: 1.0;
     }
 
     #qrcontainer {

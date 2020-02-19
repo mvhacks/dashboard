@@ -2,13 +2,13 @@
   <div id="app">
     <Side />
     <Header/>
-    <Login />
     <div id="nav">
       <router-link to="/">Main</router-link>
       <router-link to="/profile">Profile</router-link>
       <router-link to="/points">Points</router-link>
       <router-link to="/more">More</router-link>
     </div>
+    <Login />
     <router-view/>
   </div>
 </template>
@@ -39,11 +39,11 @@ export default {
 }
 
 #nav {
-  margin-top: 20px;
+  margin-top: 0;
 }
 
 #nav a {
-  font-size: 20px;
+  font-size: 25px;
   font-weight: bold;
   color: rgb(0, 112, 187);
   text-decoration: none;
