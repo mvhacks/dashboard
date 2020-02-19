@@ -3,10 +3,8 @@
     <Side />
     <Header/>
     <div id="nav">
-      <router-link to="/">Main</router-link>
       <router-link to="/profile">Profile</router-link>
       <router-link to="/points">Points</router-link>
-      <router-link to="/more">More</router-link>
     </div>
     <Login />
     <router-view/>

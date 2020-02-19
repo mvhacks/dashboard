@@ -2,7 +2,7 @@
   <div id="side-container">
     <div style="padding: 20px; padding-bottom: 0;">
         <h1 style="font-size: 40px; margin: 0px;">Remaining Time</h1>
-        <span id="timeLeft" style="font-size: 80px; margin: 0px;">12:13:18</span>
+        <span id="timeLeft" style="font-size: 80px; margin: 0px;">{{time}}</span>
     </div>
     <div style="padding: 20px; padding-top: 0;">
         <h1 style="font-size: 40px; margin: 0px;">Links</h1>
@@ -65,6 +65,7 @@ export default {
     },
     playsong: function() {
       setTimeout(() => {
+        this.updatetime();
         this.getProgress();
         if((new Date).getTime() > this.end) {
           this.getsong();
@@ -76,17 +77,42 @@ export default {
       var duration = this.end - this.start;
       var progress = (new Date).getTime() - this.start;
       this.songProgress = ((progress/duration) * 100) + "%";
+    },
+    updatetime: function() {
+      var countDownDate = new Date("April 4, 2020 20:00:00").getTime();
+      // Get todays date and time
+      var now = Date.now();
+
+      // Find the distance between now and the count down date
+      var distance = countDownDate - now;
+        
+      // Time calculations for days, hours, minutes and seconds
+      var hours = Math.floor((distance / (1000 * 60 * 60)));
+      var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+      var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+      let text = '';
+
+      if (hours > 0) {
+        text += hours + ':';
+        if (minutes < 10) {
+          minutes = '0' + minutes;
+        }
+      }
+
+      if (seconds < 10) {
+        seconds = '0' + seconds;
+      }
+      
+      text += minutes + ':' + seconds;
+        
+      // If the count down is over, write some text 
+      if (distance < 0) {
+        text = 'STOP HACKING';
+      }
+      this.time = text;
     }
-  }/*,
-  computed: {
-    songProgress: function() {
-      var duration = this.end - this.start;
-      var progress = (new Date).getTime() - this.start;
-      // alert(progress + " / " + duration)
-      // alert(((progress/duration) * 100) + "%");
-      return ((progress/duration) * 100) + "%";
-    }
-  }*/
+  }
 }
 </script>
 

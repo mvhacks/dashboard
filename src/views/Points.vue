@@ -1,9 +1,12 @@
 <template>
-  <div id="points" v-if="loggedin">
-    <h1>{{points}} points</h1>
-    <div id="points-list" v-for="point in pointsList" v-bind:key="point.time_stamp">
-      {{getTime(point.time_stamp)}} {{point.reason}}: <strong>{{point.amount}} points</strong>
+  <div>
+    <div id="points" v-if="loggedin">
+      <h1>{{points}} points</h1>
+      <div id="points-list" v-for="point in pointsList" v-bind:key="point.time_stamp">
+        {{getTime(point.time_stamp)}} {{point.reason}}: <strong>{{point.amount}} points</strong>
+      </div>
     </div>
+    <h1 id="loginmes" v-if="!loggedin">Login to see your points</h1>
   </div>
 </template>
 
@@ -70,6 +73,11 @@ export default {
 #points > h1 {
   margin-bottom: 0;
   font-size: 40px;
+}
+
+#loginmes {
+  color: black;
+  font-weight: normal;
 }
 
 #points-list {
