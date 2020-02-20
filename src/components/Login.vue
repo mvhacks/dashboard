@@ -56,8 +56,7 @@ export default {
       bus.$emit('loggedout');
     },
     submit: function() {
-      //axios.get(`https://api.mvhacks.io/3.0/attendee/profile?qrcode=` + encodeURIComponent(this.result) + `&email=` + encodeURIComponent(this.email))
-      axios.get('https://api.mvhacks.io/3.0/attendee/profile?qrcode=loollajksnflaksjdhfl&email=attendee3@gmail.com')
+      axios.get(`https://api.mvhacks.io/3.0/attendee/profile?qrcode=` + encodeURIComponent(this.result) + `&email=` + encodeURIComponent(this.email))
       .then(response => {
         if(response.data.success) {
           this.loggedin = true;
